@@ -5,11 +5,13 @@ public class Locker {
     private int lockerId;
     private String location;
     private String password;
+    private LockerStatus status;
 
-    public Locker(int lockerId, String location, String password) {
+    public Locker(int lockerId, String location, String password,LockerStatus status) {
         this.lockerId = lockerId;
         this.location = location;
         this.password = password;
+        this.status   = status;
     }
 
     public int getLockerId() {
@@ -22,5 +24,10 @@ public class Locker {
 
     public String getPassword() {
         return password;
+    }
+    public LockerStatus getStatus()
+    {
+    	return status;
+    
     }
 }

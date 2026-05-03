@@ -45,8 +45,6 @@ public class StudentDAO
 
 	        ps.executeUpdate();
 
-	        System.out.println("Student Saved (Insert/Update)");
-
 	    }catch(Exception e){
 	        e.printStackTrace();
 	    }
