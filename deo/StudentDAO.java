@@ -114,7 +114,7 @@ public class StudentDAO
                     "WHEN MATCHED THEN " +
                     "UPDATE SET LOCATION=?, PASSWORD=? " +
                     "WHEN NOT MATCHED THEN " +
-                    "INSERT (LOCKER_ID, LOCATION, PASSWORD, STUDENT_ID) VALUES (?, ?, ?, ?)";
+                    "INSERT (LOCKER_ID, LOCATION, PASSWORD, STUDENT_ID) VALUES (?, ?, ?, ?,?)";
 
                 PreparedStatement ps = con.prepareStatement(sql);
 
@@ -129,6 +129,7 @@ public class StudentDAO
                 ps.setInt(4, l.getLockerId());
                 ps.setString(5, l.getLocation());
                 ps.setString(6, l.getPassword());
+                ps.setString(7,l.getStatus().name());
                 ps.setInt(7, studentId);
 
                 ps.executeUpdate();

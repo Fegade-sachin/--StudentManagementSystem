@@ -2,6 +2,7 @@ package main;
 import java.util.Scanner;
 
 import model.Locker;
+import model.LockerStatus;
 import model.Student;
 import service.AdminService;
 import service.StudentService;
@@ -80,8 +81,13 @@ public class Main {
                     
                     System.out.println("Enter password: ");
                     String Stpassword = sc.next();
+                    
+                    System.out.print("Enter Locker Status (AVAILABLE/ALLOCATED/LOCKED): ");
+
+                    LockerStatus status =
+                    LockerStatus.valueOf(sc.next().toUpperCase());
                     System.out.println("account created successfully !! ");
-                    Locker locker=new Locker(lockerId,location,Stpassword);
+                    Locker locker=new Locker(lockerId,location,Stpassword,status);
                     
                     Student s = new Student(id,name,surname,studentClass,marks,locker);
                     service.addStudent(s);
