@@ -166,5 +166,37 @@ public class StudentDAO
                 }
                 e.printStackTrace();
             }
-        } 
+        }
+        public void searchStudentById(int id) {
+
+            try {
+
+                Connection con = DBConnection.getConnection();
+
+                String sql = "SELECT * FROM STUDENTS WHERE ID=?";
+
+                PreparedStatement ps = con.prepareStatement(sql);
+
+                ps.setInt(1, id);
+
+                ResultSet rs = ps.executeQuery();
+
+                if(rs.next()) {
+
+                    System.out.println("ID      : " + rs.getInt("ID"));
+                    System.out.println("Name    : " + rs.getString("NAME"));
+                    System.out.println("Surname : " + rs.getString("Surname"));
+                    System.out.println("Class   : " + rs.getString("StudentClass"));
+                    System.out.println("Marks   : " + rs.getInt("MARKS"));
+
+                } else {
+
+                    System.out.println("Student Not Found");
+
+                }
+
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
 }

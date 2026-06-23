@@ -19,4 +19,7 @@ public class StudentService
     public void deleteStudent(int id){
         dao.deleteStudent(id);
     }
+    public void searchStudentById(int id) {
+        dao.searchStudentById(id);
+    }
 }

@@ -45,7 +45,8 @@ public class Main {
             System.out.println("1 Add Student");
             System.out.println("2 View Students");
             System.out.println("3 Delete Student");
-            System.out.println("4 Exit");
+            System.out.println("4 Search Student");
+            System.out.println("5 Exit");
             System.out.println("--------------------------------------");
             int choice = sc.nextInt();
 
@@ -106,8 +107,16 @@ public class Main {
 
                     service.deleteStudent(did);
                     break;
-
                 case 4:
+
+                    System.out.print("Enter Student ID: ");
+                    int searchId = sc.nextInt();
+
+                    service.searchStudentById(searchId);
+
+                    break;
+
+                case 5:
                     System.exit(0);
             }
           
