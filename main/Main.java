@@ -45,11 +45,12 @@ public class Main {
             System.out.println("1 Add Student");
             System.out.println("2 View Students");
             System.out.println("3 Delete Student");
-            System.out.println("4 Search Student");
-            System.out.println("5 Exit");
+            System.out.println("4 Search Student By ID ");
+            System.out.println("5 View Student + Locker");
+            System.out.println("6 Exit");
             System.out.println("--------------------------------------");
             int choice = sc.nextInt();
-
+            System.out.println("Choice = " + choice);
             switch(choice){
 
                 case 1:
@@ -113,10 +114,14 @@ public class Main {
                     int searchId = sc.nextInt();
 
                     service.searchStudentById(searchId);
-
+                    break;
+                case 5:
+                    System.out.println("Case 5 Executed");
+                    service.viewStudentsWithLocker();
                     break;
 
-                case 5:
+                case 6:
+                	
                     System.exit(0);
             }
           

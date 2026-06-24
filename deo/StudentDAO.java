@@ -199,4 +199,39 @@ public class StudentDAO
                 e.printStackTrace();
             }
         }
+        public void viewStudentsWithLocker() {
+            try (Connection con = DBConnection.getConnection()) {
+                String sql =
+                    "SELECT s.ID, s.NAME, s.SURNAME, s.STUDENTCLASS, s.MARKS, " +
+                    "       l.LOCKER_ID, l.LOCATION, l.STATUS " +
+                    "FROM STUDENTS s " +
+                    "LEFT JOIN LOCKER l ON s.ID = l.STUDENT_ID";
+
+                PreparedStatement ps = con.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+
+                while (rs.next()) {
+                    System.out.println("\n========== STUDENT ==========");
+                    System.out.println("ID        : " + rs.getInt("ID"));
+                    System.out.println("Name      : " + rs.getString("NAME"));
+                    System.out.println("Surname   : " + rs.getString("SURNAME"));
+                    System.out.println("Class     : " + rs.getString("STUDENTCLASS"));
+                    System.out.println("Marks     : " + rs.getInt("MARKS"));
+
+                    System.out.println("\n---------- LOCKER ----------");
+                    int lockerId = rs.getInt("LOCKER_ID");
+                    if (rs.wasNull()) {
+                        System.out.println("No locker assigned");
+                    } else {
+                        System.out.println("Locker ID : " + lockerId);
+                        System.out.println("Location  : " + rs.getString("LOCATION"));
+                        System.out.println("Status    : " + rs.getString("STATUS"));
+                    }
+                    System.out.println("============================");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
 }

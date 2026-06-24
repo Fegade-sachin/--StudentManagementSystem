@@ -22,4 +22,7 @@ public class StudentService
     public void searchStudentById(int id) {
         dao.searchStudentById(id);
     }
+    public void viewStudentsWithLocker() {
+        dao.viewStudentsWithLocker();
+    }
 }
