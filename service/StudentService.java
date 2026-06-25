@@ -1,6 +1,7 @@
 package service;
 
 import deo.StudentDAO;
+import model.Locker;
 import model.Student;
 
 public class StudentService 
@@ -8,8 +9,8 @@ public class StudentService
 
     StudentDAO dao = new StudentDAO();
 
-    public void addStudent(Student s){
-        dao.saveOrUpdateStudent(s);
+    public void addStudent(Student s , Locker l){
+        dao.saveStudentWithLocker(s, l);
     }
 
     public void viewStudents(){

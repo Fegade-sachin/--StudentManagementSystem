@@ -101,72 +101,57 @@ public class StudentDAO
             }
         
     }
-        public void saveOrUpdateLocker(Locker l, int studentId){
+        public void saveOrUpdateStudent(Student s, Connection con) throws Exception {
+            String sql = "MERGE INTO STUDENTS st USING dual ON (st.ID = ?) " +
+                         "WHEN MATCHED THEN UPDATE SET NAME=?, SURNAME=?, STUDENTCLASS=?, MARKS=? " +
+                         "WHEN NOT MATCHED THEN INSERT (ID, NAME, SURNAME, STUDENTCLASS, MARKS) VALUES (?, ?, ?, ?, ?)";
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setInt(1, s.getId());
+                ps.setString(2, s.getName());
+                ps.setString(3, s.getSurname());
+                ps.setString(4, s.getStudentClass());
+                ps.setInt(5, s.getMarks());
+                ps.setInt(6, s.getId());
+                ps.setString(7, s.getName());
+                ps.setString(8, s.getSurname());
+                ps.setString(9, s.getStudentClass());
+                ps.setInt(10, s.getMarks());
+                ps.executeUpdate();
+            }
+        }
 
-            try{
-
-                Connection con = DBConnection.getConnection();
-
-                String sql =
-                    "MERGE INTO LOCKER l " +
-                    "USING dual " +
-                    "ON (l.STUDENT_ID = ?) " +
-                    "WHEN MATCHED THEN " +
-                    "UPDATE SET LOCATION=?, PASSWORD=? " +
-                    "WHEN NOT MATCHED THEN " +
-                    "INSERT (LOCKER_ID, LOCATION, PASSWORD, STUDENT_ID) VALUES (?, ?, ?, ?,?)";
-
-                PreparedStatement ps = con.prepareStatement(sql);
-
-                // ON condition
+        public void saveOrUpdateLocker(Locker l, int studentId, Connection con) throws Exception {
+            String sql = "MERGE INTO LOCKER lo USING dual ON (lo.STUDENT_ID = ?) " +
+                         "WHEN MATCHED THEN UPDATE SET LOCATION=?, PASSWORD=?, STATUS=? " +
+                         "WHEN NOT MATCHED THEN INSERT (LOCKER_ID, LOCATION, PASSWORD, STATUS, STUDENT_ID) VALUES (?, ?, ?, ?, ?)";
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
                 ps.setInt(1, studentId);
-
-                // UPDATE
                 ps.setString(2, l.getLocation());
                 ps.setString(3, l.getPassword());
-
-                // INSERT
-                ps.setInt(4, l.getLockerId());
-                ps.setString(5, l.getLocation());
-                ps.setString(6, l.getPassword());
-                ps.setString(7,l.getStatus().name());
-                ps.setInt(7, studentId);
-
+                ps.setString(4, l.getStatus().name());
+                ps.setInt(5, l.getLockerId());
+                ps.setString(6, l.getLocation());
+                ps.setString(7, l.getPassword());
+                ps.setString(8, l.getStatus().name());
+                ps.setInt(9, studentId);
                 ps.executeUpdate();
-
-                System.out.println("Locker Saved (Insert/Update)");
-
-            }catch(Exception e){
-                e.printStackTrace();
             }
         }
-        public void saveStudentWithLocker(Student s, Locker l){
 
-            Connection con = null;
-
-            try{
-                con = DBConnection.getConnection();
-                con.setAutoCommit(false); // 🔥 Transaction
-
-                // 1. Student
-                saveOrUpdateStudent(s);
-
-                // 2. Locker
-                saveOrUpdateLocker(l, s.getId());
-
+        public void saveStudentWithLocker(Student s, Locker l) {
+            try (Connection con = DBConnection.getConnection()) {
+                con.setAutoCommit(false);
+                saveOrUpdateStudent(s, con);
+                saveOrUpdateLocker(l, s.getId(), con);
                 con.commit();
-
-                System.out.println("Student + Locker Saved");
-
-            }catch(Exception e){
-                try{
-                    if(con != null) con.rollback();
-                }catch(Exception ex){
-                    ex.printStackTrace();
-                }
+                System.out.println("✅ Student + Locker Saved");
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+
+
+
         public void searchStudentById(int id) {
 
             try {
@@ -201,11 +186,9 @@ public class StudentDAO
         }
         public void viewStudentsWithLocker() {
             try (Connection con = DBConnection.getConnection()) {
-                String sql =
-                    "SELECT s.ID, s.NAME, s.SURNAME, s.STUDENTCLASS, s.MARKS, " +
-                    "       l.LOCKER_ID, l.LOCATION, l.STATUS " +
-                    "FROM STUDENTS s " +
-                    "LEFT JOIN LOCKER l ON s.ID = l.STUDENT_ID";
+            	String sql = "SELECT s.id, s.name, s.surname, s.studentClass, s.marks, " +
+                        "l.locker_id, l.location, l.status " +
+                        "FROM students s LEFT JOIN locker l ON s.id = l.student_id";
 
                 PreparedStatement ps = con.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery();
