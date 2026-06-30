@@ -46,6 +46,13 @@ public class Student
 	public String getStudentClass() {
 		return StudentClass;
 	}
+	public void setLocker(Locker locker2) {
+	    this.locker = locker2;
+	}
+	
+
+	
+		
 	
 	
 }

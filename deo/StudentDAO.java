@@ -216,5 +216,33 @@ public class StudentDAO
                 e.printStackTrace();
             }
         }
+        public Student getStudentById(int id) {
+            Student student = null;
+            try (Connection con = DBConnection.getConnection()) {
+                String sql = "SELECT * FROM STUDENTS WHERE ID=?";
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1, id);
+                ResultSet rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    student = new Student(
+                        rs.getInt("ID"),
+                        rs.getString("NAME"),
+                        rs.getString("SURNAME"),
+                        rs.getString("STUDENTCLASS"),
+                        rs.getInt("MARKS"),
+                        null // locker fetched separately if needed
+                    );
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return student;
+        }
+
+
+
+
+
 
 }

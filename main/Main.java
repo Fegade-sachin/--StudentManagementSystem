@@ -44,7 +44,8 @@ public class Main {
 			System.out.println("3 Delete Student");
 			System.out.println("4 Search Student By ID ");
 			System.out.println("5 View Student + Locker");
-			System.out.println("6 Exit");
+			System.out.println("6 Assign Locker to Existing Student");
+			System.out.println("7 Exit");
 			System.out.println("--------------------------------------");
 			int choice = sc.nextInt();
 
@@ -115,8 +116,41 @@ public class Main {
 				System.out.println("view Students with Locker");
 				service.viewStudentsWithLocker();
 				break;
-
 			case 6:
+			    System.out.print("Enter Student ID to assign locker: ");
+			    int studentId = sc.nextInt();
+			    sc.nextLine(); // consume newline
+
+			    Student existing = service.findStudentById(studentId); // FIX: find student first
+			    if (existing != null) {
+			        if (existing.getLocker() == null) {
+			            System.out.print("Enter lockerId: ");
+			            int lockerId = sc.nextInt();
+			            sc.nextLine();
+
+			            System.out.print("Enter location: ");
+			            String location = sc.nextLine();
+
+			            System.out.print("Enter password: ");
+			            String password = sc.nextLine();
+
+			            Locker locker = new Locker(lockerId, location, password, LockerStatus.ALLOCATED);
+			            existing.setLocker(locker);
+
+			            // Persist locker in DB
+			            service.addLockerToStudent(existing, locker);
+
+			            System.out.println("Locker assigned successfully!");
+			        } else {
+			            System.out.println("Student already has a locker.");
+			        }
+			    } else {
+			        System.out.println("Student not found.");
+			    }
+			    break;
+
+
+			case 7:
 
 				System.exit(0);
 			}
