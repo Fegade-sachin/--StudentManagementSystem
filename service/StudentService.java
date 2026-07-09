@@ -45,6 +45,14 @@ public class StudentService
         }
     }
 
+    public void viewLockerById(int searchLockerId) {
+        dao.viewLockerById(searchLockerId); // single locker
+    }
+
+
+
+
+
 
 
 

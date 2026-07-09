@@ -240,9 +240,25 @@ public class StudentDAO
             return student;
         }
 
+        public void viewLockerById(int lockerId) {
+            try (Connection con = DBConnection.getConnection()) {
+                String sql = "SELECT * FROM LOCKER WHERE LOCKER_ID=?";
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1, lockerId);
+                ResultSet rs = ps.executeQuery();
 
-
-
-
+                if (rs.next()) {
+                    System.out.println("Locker ID : " + rs.getInt("LOCKER_ID"));
+                    System.out.println("Location  : " + rs.getString("LOCATION"));
+                    System.out.println("Password  : " + rs.getString("PASSWORD")); // optional
+                    System.out.println("Status    : " + rs.getString("STATUS"));
+                    System.out.println("StudentID : " + rs.getInt("STUDENT_ID"));
+                } else {
+                    System.out.println("Locker not found.");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
 }

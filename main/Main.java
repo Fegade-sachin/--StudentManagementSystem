@@ -45,7 +45,8 @@ public class Main {
 			System.out.println("4 Search Student By ID ");
 			System.out.println("5 View Student + Locker");
 			System.out.println("6 Assign Locker to Existing Student");
-			System.out.println("7 Exit");
+			System.out.println("7 View Lockers By ID");
+			System.out.println("8 Exit");
 			System.out.println("--------------------------------------");
 			int choice = sc.nextInt();
 
@@ -148,13 +149,19 @@ public class Main {
 			        System.out.println("Student not found.");
 			    }
 			    break;
-
-
 			case 7:
+			    System.out.print("Enter Locker ID: ");
+			    int searchLockerId = sc.nextInt();
+			    service.viewLockerById(searchLockerId);
+			    break;
 
-				System.exit(0);
+
+			case 9:
+			    System.exit(0);
+
+
+		
 			}
-
 		}
 	}
 }
